@@ -62,7 +62,7 @@ if __name__ == "__main__":
     parser.add_argument("--dev_json", type=str, required=True, help="Chemin vers dev.json de BIRD")
     parser.add_argument("--db_root", type=str, required=True, help="Chemin vers le dossier dev_databases")
     parser.add_argument("--model_id", type=str, default="Qwen/Qwen2.5-Coder-7B-Instruct")
-    parser.add_argument("--limit", type=int, default=20, help="Nombre d'exemples pour le premier test")
+    # parser.add_argument("--limit", type=int, default=20, help="Nombre d'exemples pour le premier test")
     parser.add_argument("--use_4bit", action="store_true", default=True)
     parser.add_argument("--output_dir", type=str, default="results")
     args = parser.parse_args()
