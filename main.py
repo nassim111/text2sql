@@ -3,7 +3,7 @@ import json
 import argparse
 from tqdm import tqdm
 from src.data_loader import load_bird_samples, extract_schema_from_db
-from src.prompt import create_text2sql_prompt
+from src.prompts import create_text2sql_prompt
 from src.methods.baseline import BaselineModel
 from src.evaluation import evaluate_execution_accuracy
 
