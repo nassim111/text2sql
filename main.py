@@ -2,7 +2,7 @@ import os
 import json
 import argparse
 from tqdm import tqdm
-from src.data_loader import load_bird_samples, extract_schema_from_db
+from src.data_loader import load_bird_samples,load_spider_samples,extract_schema_from_db
 from src.prompts import create_text2sql_prompt
 from src.methods.baseline import BaselineModel
 from src.evaluation import evaluate_execution_accuracy
@@ -10,9 +10,14 @@ from src.evaluation import evaluate_execution_accuracy
 def main(args):
     os.makedirs(args.output_dir, exist_ok=True)
     
-    print("1. Chargement des données...")
-    samples = load_bird_samples(args.dev_json, args.db_root, limit=args.limit)
-    print(f"-> {len(samples)} exemples chargés.")
+    print(f"1. Chargement des données pour le benchmark : {args.benchmark.upper()}...")
+    if args.benchmark.lower() == "bird":
+        samples = load_bird_samples(args.dev_json, args.db_root, limit=args.limit)
+    elif args.benchmark.lower() == "spider":
+        samples = load_spider_samples(args.dev_json, args.db_root, limit=args.limit)
+    else:
+        raise ValueError(f"Benchmark inconnu : {args.benchmark}")
+    print(f"-> {len(samples)} exemples au total.")
 
     print("2. Chargement du modèle...")
     model = BaselineModel(model_id=args.model_id, use_4bit=args.use_4bit)
@@ -52,7 +57,7 @@ def main(args):
     print(f"Total testés: {len(samples)}")
     print(f"Execution Accuracy: {accuracy * 100:.2f}%")
 
-    out_file = os.path.join(args.output_dir, "baseline_results.json")
+    out_file = os.path.join(args.output_dir, f"{args.benchmark.lower()}_baseline_results.json")
     with open(out_file, "w", encoding="utf-8") as f:
         json.dump({"accuracy": accuracy, "details": results}, f, indent=4)
     print(f"Résultats sauvegardés dans {out_file}")
@@ -62,8 +67,9 @@ if __name__ == "__main__":
     parser.add_argument("--dev_json", type=str, required=True, help="Chemin vers dev.json de BIRD")
     parser.add_argument("--db_root", type=str, required=True, help="Chemin vers le dossier dev_databases")
     parser.add_argument("--model_id", type=str, default="Qwen/Qwen2.5-Coder-7B-Instruct")
-    parser.add_argument("--limit", type=int, default=20, help="Nombre d'exemples pour le premier test")
+    #parser.add_argument("--limit", type=int, default=20, help="Nombre d'exemples pour le premier test")
     parser.add_argument("--use_4bit", action="store_true", default=True)
     parser.add_argument("--output_dir", type=str, default="results")
+    parser.add_argument("--benchmark", type=str, default="bird", choices=["bird", "spider"], help="Nom du benchmark (bird ou spider)")
     args = parser.parse_args()
     main(args)

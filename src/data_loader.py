@@ -36,3 +36,28 @@ def load_bird_samples(dev_json_path: str, db_root_path: str, limit: int = None) 
             "db_path": db_path
         })
     return samples
+
+
+def load_spider_samples(dev_json_path: str, db_root_path: str, limit: int = None) -> List[Dict]:
+    """Charge les exemples du dev set de Spider 1.0."""
+    with open(dev_json_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    if limit:
+        data = data[:limit]
+
+    samples = []
+    for idx, item in enumerate(data):
+        db_id = item["db_id"]
+        
+        db_path = str(Path(db_root_path) / db_id / f"{db_id}.sqlite")
+
+        samples.append({
+            "question_id": idx,                       # Spider n'a pas toujours de question_id, on utilise l'index
+            "question": item["question"],
+            "evidence": "",                           # Spider n'a pas d'evidence
+            "gold_sql": item.get("query", ""),        # Dans Spider c'est 'query' et non 'SQL'
+            "db_id": db_id,
+            "db_path": db_path
+        })
+    return samples
