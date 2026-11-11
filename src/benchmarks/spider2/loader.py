@@ -73,7 +73,7 @@ class Spider2SnowBenchmark:
         Files are sorted by name to ensure deterministic schema ordering across runs.
         """
         target_db_folder = self.db_dir / db_id
-        print(f"####### {target_db_folde}")
+        print(f"####### {target_db_folder}")
         if not target_db_folder.exists():
             return f"Database: {db_id}"
 
@@ -82,7 +82,7 @@ class Spider2SnowBenchmark:
         # sorted() guarantees consistent prompt context across different operating systems
         for file_path in sorted(target_db_folder.rglob("*")):
             if not file_path.is_file():
-                print"c est un sous dossier !!!! "
+                print("c est un sous dossier !!!! ")
             if file_path.suffix in [".sql", ".csv", ".md", ".json", ".txt"]:
                 try:
                     with open(file_path, "r", encoding="utf-8", errors="ignore") as sf:
