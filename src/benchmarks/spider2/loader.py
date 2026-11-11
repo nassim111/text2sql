@@ -79,8 +79,8 @@ class Spider2SnowBenchmark:
         schema_parts = [f"Database: {db_id}"]
 
         # sorted() guarantees consistent prompt context across different operating systems
-        for file_path in sorted(target_db_folder.glob("*")):
-            if file_path.suffix in [".sql", ".md", ".json", ".txt"]:
+        for file_path in sorted(target_db_folder.rglob("*")):
+            if file_path.suffix in [".sql", ".csv", ".md", ".json", ".txt"]:
                 try:
                     with open(file_path, "r", encoding="utf-8", errors="ignore") as sf:
                         # Truncate large files to prevent exceeding model context windows
