@@ -81,7 +81,7 @@ class Spider2SnowBenchmark:
         # sorted() guarantees consistent prompt context across different operating systems
         for file_path in sorted(target_db_folder.rglob("*")):
             if not file_path.is_file():
-                continue
+                print"c est un sous dossier !!!! "
             if file_path.suffix in [".sql", ".csv", ".md", ".json", ".txt"]:
                 try:
                     with open(file_path, "r", encoding="utf-8", errors="ignore") as sf:
