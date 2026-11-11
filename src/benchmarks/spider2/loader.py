@@ -73,6 +73,7 @@ class Spider2SnowBenchmark:
         Files are sorted by name to ensure deterministic schema ordering across runs.
         """
         target_db_folder = self.db_dir / db_id
+        print("####### target_db_folde")
         if not target_db_folder.exists():
             return f"Database: {db_id}"
 
